@@ -2,20 +2,22 @@
 
 namespace Core;
 
-use Core\Middleware\Auth;
+use Core\Middleware\Authenticated;
 use Core\Middleware\Guest;
 use Core\Middleware\Middleware;
 
 class Router
 {
-
     protected $routes = [];
 
     public function add($method, $uri, $controller)
     {
-        $middleware = null; // middleware nulo por default
-
-        $this->routes[] = compact('method', 'uri', 'controller', 'middleware');
+        $this->routes[] = [
+            'uri' => $uri,
+            'controller' => $controller,
+            'method' => $method,
+            'middleware' => null
+        ];
 
         return $this;
     }
@@ -55,16 +57,19 @@ class Router
     public function route($uri, $method)
     {
         foreach ($this->routes as $route) {
-            if ($route['uri'] == $uri and $route['method'] == strtoupper($method)) {
-
-                //apply middleware
+            if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
                 Middleware::resolve($route['middleware']);
 
-                return require base_path("Http/controllers/$route[controller]");
+                return require base_path('Http/controllers/' . $route['controller']);
             }
         }
 
         $this->abort();
+    }
+
+    public function previousUrl()
+    {
+        return $_SERVER['HTTP_REFERER'];
     }
 
     protected function abort($code = 404)

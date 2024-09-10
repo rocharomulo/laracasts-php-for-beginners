@@ -1,7 +1,6 @@
 <?php
 
 use Core\Response;
-use Core\Session;
 
 function dd($value)
 {
@@ -31,6 +30,8 @@ function authorize($condition, $status = Response::FORBIDDEN)
     if (! $condition) {
         abort($status);
     }
+
+    return true;
 }
 
 function base_path($path)
@@ -47,11 +48,11 @@ function view($path, $attributes = [])
 
 function redirect($path)
 {
-    header("location: $path");
-    exit;
+    header("location: {$path}");
+    exit();
 }
 
 function old($key, $default = '')
 {
-    return Session::get('old')[$key] ?? $default;
+    return Core\Session::get('old')[$key] ?? $default;
 }
