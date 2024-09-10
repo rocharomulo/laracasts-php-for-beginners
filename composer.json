@@ -1,0 +1,26 @@
+{
+    "name": "romulo/demo",
+    "authors": [
+        {
+            "name": "Romulo Rocha",
+            "email": "romulorj2023@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/collections": "^11.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "Http\\": "Http/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
